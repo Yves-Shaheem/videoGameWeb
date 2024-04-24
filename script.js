@@ -8,12 +8,16 @@ var playerTankSprite;
 var goalSprite;
 var playerOffsetX = (resolutionX / 2 - 24);
 var playerOffsetY = (resolutionY / 2 - 24);
+var goalOffsetX = (resolutionX / 2 - (Math.random() * 200) + 0);
+var goalOffsetY = (resolutionY / 2 - (Math.random() * 200) + 0);
+console.log(goalOffsetX + " Goal Off Set " + goalOffsetY);
+
 
 
 const app = new PIXI.Application({ width: resolutionX, height: resolutionY, backgroundColor: 0x1099bb });
 
-var boxWidth = resolutionX/ 15;
-var boxHeight = resolutionY / 15;
+var boxWidth = resolutionX/ 40;
+var boxHeight = resolutionY / 40;
 console.log(boxWidth);
 
 document.getElementById("pixi-container").appendChild(app.view);
@@ -52,24 +56,46 @@ texturePromise.then((texturePromiseReceive) => {
             new PIXI.Rectangle(0 * 48,46*48, 48, 48)
         );
         goalSprite = new PIXI.Sprite(goalTexture);
-        spawnGoal();
+        goalSprite.x = Math.round(goalOffsetX);
+        goalSprite.y = Math.round(goalOffsetY);
         app.stage.addChild(goalSprite);
+        
+        
 
     })
     
+    
 }
 )
-function spawnGoal(){
-    var randomX = Math.floor((Math.random() * 10) + 0);
-    var randomY = Math.floor((Math.random() * 10) + 0);
 
-    goalSprite.position.x = resolutionX - randomX;
-    goalSprite.position.y = resolutionY - randomY;
+function collide(){
+    console.log(playerTankSprite.x + " " + playerTankSprite.y);
+    console.log(goalSprite.x + " " + goalSprite.y);
+    let newXValue = (Math.random() * 200);
+    let newYValue = (Math.random() * 200);
 
-
+    let positionX = false;
+    let positionY = false; 
+    for (let i = 0; i < 20; i++) {
+        if(playerTankSprite.x == goalSprite.x + i){
+            console.log("Position X collide");
+            positionX = true};
+        if(playerTankSprite.y == goalSprite.y+ i){
+            console.log("Position X collide");
+            positionY = true};
+    }
+    if(positionX && positionY){
+        console.log("Both position collide");
+        goalSprite.position.y =+ newYValue;
+        goalSprite.position.x =+ newXValue;
+        goalSprite.x = Math.round(goalSprite.x);
+        goalSprite.y = Math.round(goalSprite.y);
+    }
 }
 
+
 function onKeyDown(key) {
+    collide();
     // W Key is 87
     // Up arrow is 87
     if (key.keyCode === 87 || key.keyCode === 38) {
@@ -109,5 +135,8 @@ function onKeyDown(key) {
             playerTankSprite.position.x += boxWidth;
         }
     }
+    playerTankSprite.position.x = Math.round(playerTankSprite.position.x);
+    playerTankSprite.position.y = Math.round(playerTankSprite.position.y);
+    console.log(playerTankSprite.x + " " + playerTankSprite.y);
 }
 ;
