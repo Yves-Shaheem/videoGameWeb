@@ -1,3 +1,5 @@
+const context = cast.framework.CastReceiverContext.getInstance();
+const NAMESPACE = 'urn:x-cast:testChannel';
 const resolutionX = 800;
 const resolutionY = 800;
 var tileSizeX = 128;
