@@ -1,5 +1,5 @@
-const resolutionX = 900;
-const resolutionY = 900;
+const resolutionX = 800;
+const resolutionY = 800;
 var tileSizeX = 128;
 var tileSizeY = 128;
 
@@ -10,6 +10,7 @@ var playerOffsetX = (resolutionX / 2 - 24);
 var playerOffsetY = (resolutionY / 2 - 24);
 var goalOffsetX = (resolutionX / 2 - (Math.random() * 200) + 0);
 var goalOffsetY = (resolutionY / 2 - (Math.random() * 200) + 0);
+var score = 0;
 console.log(goalOffsetX + " Goal Off Set " + goalOffsetY);
 
 
@@ -71,8 +72,8 @@ texturePromise.then((texturePromiseReceive) => {
 function collide(){
     console.log(playerTankSprite.x + " " + playerTankSprite.y);
     console.log(goalSprite.x + " " + goalSprite.y);
-    let newXValue = (Math.random() * 200);
-    let newYValue = (Math.random() * 200);
+    let newXValue = (Math.random() * 600);
+    let newYValue = (Math.random() * 600);
 
     let positionX = false;
     let positionY = false; 
@@ -81,13 +82,14 @@ function collide(){
             console.log("Position X collide");
             positionX = true};
         if(playerTankSprite.y == goalSprite.y+ i){
-            console.log("Position X collide");
+            console.log("Position Y collide");
             positionY = true};
     }
     if(positionX && positionY){
         console.log("Both position collide");
-        goalSprite.position.y =+ newYValue;
-        goalSprite.position.x =+ newXValue;
+        score +=100;
+        goalSprite.position.y = newYValue;
+        goalSprite.position.x = newXValue;
         goalSprite.x = Math.round(goalSprite.x);
         goalSprite.y = Math.round(goalSprite.y);
     }
@@ -137,6 +139,8 @@ function onKeyDown(key) {
     }
     playerTankSprite.position.x = Math.round(playerTankSprite.position.x);
     playerTankSprite.position.y = Math.round(playerTankSprite.position.y);
+    document.getElementById("status").innerHTML = "Version 1.2 "+" Position X: "+ playerTankSprite.x + " Position Y: " + playerTankSprite.y;
+    document.getElementById("score").innerHTML = "Score = " +score;
     console.log(playerTankSprite.x + " " + playerTankSprite.y);
 }
 ;
