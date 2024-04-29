@@ -1,5 +1,8 @@
 const context = cast.framework.CastReceiverContext.getInstance();
 const NAMESPACE = 'urn:x-cast:testChannel';
+context.addCustomMessageListener(NAMESPACE, handleCustomMess);
+
+
 const resolutionX = 800;
 const resolutionY = 800;
 var tileSizeX = 128;
@@ -70,6 +73,24 @@ texturePromise.then((texturePromiseReceive) => {
     
 }
 )
+function handleCustomMess(CustomMess){
+    let distanceX = CustomMess.data.pX;
+    let distanceY = CustomMess.data.pY;
+    if(distanceY == 0){
+        playerTankSprite.position.y -= boxHeight;
+    }
+    else{
+        playerTankSprite.position.y += boxHeight
+    }
+    if(distanceX == 0){
+        playerTankSprite.position.x -= boxWidth;
+        
+    }else{
+       playerTankSprite.position.x += boxWidth;
+    }
+
+}
+
 
 function collide(){
     console.log(playerTankSprite.x + " " + playerTankSprite.y);
@@ -145,4 +166,6 @@ function onKeyDown(key) {
     document.getElementById("score").innerHTML = "Score = " +score;
     console.log(playerTankSprite.x + " " + playerTankSprite.y);
 }
-;
+const options = new cast.framework.CastReceiverOptions(); 
+
+context.start(options);
