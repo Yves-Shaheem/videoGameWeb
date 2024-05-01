@@ -1,6 +1,6 @@
 const context = cast.framework.CastReceiverContext.getInstance();
 const NAMESPACE = 'urn:x-cast:gameSWJS';
-context.addCustomMessageListener(NAMESPACE, handleCustomMess);
+
 
 
 const resolutionX = 800;
@@ -167,5 +167,5 @@ function onKeyDown(key) {
     console.log(playerTankSprite.x + " " + playerTankSprite.y);
 }
 const options = new cast.framework.CastReceiverOptions(); 
-
+context.addCustomMessageListener(NAMESPACE, handleCustomMess);
 context.start(options);
