@@ -5,6 +5,7 @@ const resolutionX = 800;
 const resolutionY = 800;
 var tileSizeX = 128;
 var tileSizeY = 128;
+
 var groundTiles;
 var playerTankSprite;
 var goalSprite;
@@ -27,17 +28,11 @@ const texturePromise = PIXI.Assets.load('imgs/imgGalaxy.png');
 const tankPromise = PIXI.Assets.load('imgs/imgTanks.png');
 const goalPromise = PIXI.Assets.load('imgs/imgTanks.png');
 
-const basicText = new Text({ text: " Score: " + score + " positionX: " + playerTankSprite.x + " positionY : " +playerTankSprite.x + " "});
-basicText.x = 50;
-basicText.y = 50;
-
 texturePromise.then((texturePromiseReceive) => {
-    
     document.addEventListener('keydown', onKeyDown);
     var groundTiles = new PIXI.tilemap.CompositeRectTileLayer(0, PIXI.utils.TextureCache['imgs/imgGalaxy.png']);
     
     app.stage.addChild(groundTiles);
-    
 
     for (var i = 0; i <= parseInt(resolutionX / tileSizeX); i++) {
         for (var j = 0; j <= parseInt(resolutionX / tileSizeX); j++) {
