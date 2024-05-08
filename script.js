@@ -43,8 +43,8 @@ const style = new TextStyle({
     wordWrapWidth: 440,
 });
 const basicText = new Text({ text: " Score: " + score + " version: 2 " + " positionX: " + playerTankSprite.x + " positionY : " +playerTankSprite.x + " ", style});
-basicText.x = 20;
-basicText.y = 20;
+basicText.x = 200;
+basicText.y = 200;
 
 texturePromise.then((texturePromiseReceive) => {
     
@@ -85,18 +85,16 @@ texturePromise.then((texturePromiseReceive) => {
 }
 )
 function handleCustomMess(CustomMess){
-    let distanceX = CustomMess.data.pX;
-    let distanceY = CustomMess.data.pY;
-    if(distanceY == 1){
+    if(CustomMess.data.for){
         playerTankSprite.position.y += boxHeight;
     }
-    else if(distanceY == -1){
+    else if(CustomMess.data.bac){
         playerTankSprite.position.y -= boxHeight
     }
-    if(distanceX == 1){
+    if(CustomMess.data.lef){
         playerTankSprite.position.x += boxWidth;
         
-    }else if(distanceX == -1){
+    }else if(CustomMess.data.rig){
        playerTankSprite.position.x -= boxWidth;
     }
 
