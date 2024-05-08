@@ -65,16 +65,16 @@ texturePromise.then((texturePromiseReceive) => {
 }
 )
 function handleCustomMess(CustomMess){
-    if(CustomMess.data.for){
+    if(CustomMess.data.for && !CustomMess.data.bac){
         playerTankSprite.position.y += boxHeight;
     }
-    else if(CustomMess.data.bac){
+    else if( !CustomMess.data.for && CustomMess.data.bac){
         playerTankSprite.position.y -= boxHeight
     }
-    if(CustomMess.data.lef){
+    if(CustomMess.data.lef && !CustomMess.data.rig){
         playerTankSprite.position.x += boxWidth;
         
-    }else if(CustomMess.data.rig){
+    }else if(CustomMess.data.rig && !CustomMess.data.lef){
        playerTankSprite.position.x -= boxWidth;
     }
 
