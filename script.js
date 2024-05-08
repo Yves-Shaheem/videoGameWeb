@@ -26,25 +26,10 @@ document.getElementById("pixi-container").appendChild(app.view);
 const texturePromise = PIXI.Assets.load('imgs/imgGalaxy.png');
 const tankPromise = PIXI.Assets.load('imgs/imgTanks.png');
 const goalPromise = PIXI.Assets.load('imgs/imgTanks.png');
-const style = new TextStyle({
-    fontFamily: 'Arial',
-    fontSize: 36,
-    fontStyle: 'italic',
-    fontWeight: 'bold',
-    fill: { fill },
-    stroke: { color: '#4a1850', width: 5, join: 'round' },
-    dropShadow: {
-        color: '#000000',
-        blur: 4,
-        angle: Math.PI / 6,
-        distance: 6,
-    },
-    wordWrap: true,
-    wordWrapWidth: 440,
-});
-const basicText = new Text({ text: " Score: " + score + " version: 2 " + " positionX: " + playerTankSprite.x + " positionY : " +playerTankSprite.x + " ", style});
-basicText.x = 20;
-basicText.y = 20;
+
+const basicText = new Text({ text: " Score: " + score + " positionX: " + playerTankSprite.x + " positionY : " +playerTankSprite.x + " "});
+basicText.x = 50;
+basicText.y = 50;
 
 texturePromise.then((texturePromiseReceive) => {
     
