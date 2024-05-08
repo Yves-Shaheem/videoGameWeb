@@ -66,16 +66,28 @@ texturePromise.then((texturePromiseReceive) => {
 )
 function handleCustomMess(CustomMess){
     if(CustomMess.data.for && !CustomMess.data.bac){
-        playerTankSprite.position.y += 20;
+        if (playerTankSprite.position.y != 0) {
+            // Don't move up if the player is at the top of the stage
+            playerTankSprite.position.y -= boxHeight;
+        }
     }
     else if( !CustomMess.data.for && CustomMess.data.bac){
-        playerTankSprite.position.y -= 20;
+        if (playerTankSprite.position.y != resolutionY - boxHeight) {
+            // Don't move down if the player is at the bottom of the stage
+            playerTankSprite.position.y += boxHeight;
+        }
     }
     if(CustomMess.data.lef && !CustomMess.data.rig){
-        playerTankSprite.position.x += 20;
+        if (playerTankSprite.position.x != 0) {
+            // Don't move to the left if the player is at the left side of the stage
+            playerTankSprite.position.x -= boxWidth;
+        }
         
     }else if(CustomMess.data.rig && !CustomMess.data.lef){
-       playerTankSprite.position.x -= 20;
+        if (playerTankSprite.position.x != resolutionX - boxWidth) {
+            // Don't move to the right if the player is at the right side of the stage
+            playerTankSprite.position.x += boxWidth;
+        }
     }
 
 }
