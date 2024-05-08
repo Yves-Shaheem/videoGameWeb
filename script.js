@@ -52,7 +52,7 @@ texturePromise.then((texturePromiseReceive) => {
     var groundTiles = new PIXI.tilemap.CompositeRectTileLayer(0, PIXI.utils.TextureCache['imgs/imgGalaxy.png']);
     
     app.stage.addChild(groundTiles);
-    app.stage.addChild(basicText);
+    
 
     for (var i = 0; i <= parseInt(resolutionX / tileSizeX); i++) {
         for (var j = 0; j <= parseInt(resolutionX / tileSizeX); j++) {
