@@ -43,8 +43,8 @@ const style = new TextStyle({
     wordWrapWidth: 440,
 });
 const basicText = new Text({ text: " Score: " + score + " version: 2 " + " positionX: " + playerTankSprite.x + " positionY : " +playerTankSprite.x + " ", style});
-basicText.x = 200;
-basicText.y = 200;
+basicText.x = 20;
+basicText.y = 20;
 
 texturePromise.then((texturePromiseReceive) => {
     
