@@ -1,13 +1,10 @@
 const context = cast.framework.CastReceiverContext.getInstance();
 const NAMESPACE = 'urn:x-cast:gameSWJS';
 
-
-
 const resolutionX = 800;
 const resolutionY = 800;
 var tileSizeX = 128;
 var tileSizeY = 128;
-
 var groundTiles;
 var playerTankSprite;
 var goalSprite;
@@ -17,8 +14,6 @@ var goalOffsetX = (resolutionX / 2 - (Math.random() * 200) + 0);
 var goalOffsetY = (resolutionY / 2 - (Math.random() * 200) + 0);
 var score = 0;
 console.log(goalOffsetX + " Goal Off Set " + goalOffsetY);
-
-
 
 const app = new PIXI.Application({ width: resolutionX, height: resolutionY, backgroundColor: 0x1099bb });
 
@@ -31,12 +26,33 @@ document.getElementById("pixi-container").appendChild(app.view);
 const texturePromise = PIXI.Assets.load('imgs/imgGalaxy.png');
 const tankPromise = PIXI.Assets.load('imgs/imgTanks.png');
 const goalPromise = PIXI.Assets.load('imgs/imgTanks.png');
+const style = new TextStyle({
+    fontFamily: 'Arial',
+    fontSize: 36,
+    fontStyle: 'italic',
+    fontWeight: 'bold',
+    fill: { fill },
+    stroke: { color: '#4a1850', width: 5, join: 'round' },
+    dropShadow: {
+        color: '#000000',
+        blur: 4,
+        angle: Math.PI / 6,
+        distance: 6,
+    },
+    wordWrap: true,
+    wordWrapWidth: 440,
+});
+const basicText = new Text({ text: " Score: " + score + " version: 2 " + " positionX: " + playerTankSprite.x + " positionY : " +playerTankSprite.x + " ", style});
+basicText.x = 20;
+basicText.y = 20;
 
 texturePromise.then((texturePromiseReceive) => {
+    
     document.addEventListener('keydown', onKeyDown);
     var groundTiles = new PIXI.tilemap.CompositeRectTileLayer(0, PIXI.utils.TextureCache['imgs/imgGalaxy.png']);
     
     app.stage.addChild(groundTiles);
+    app.stage.addChild(basicText);
 
     for (var i = 0; i <= parseInt(resolutionX / tileSizeX); i++) {
         for (var j = 0; j <= parseInt(resolutionX / tileSizeX); j++) {
@@ -64,13 +80,8 @@ texturePromise.then((texturePromiseReceive) => {
         goalSprite = new PIXI.Sprite(goalTexture);
         goalSprite.x = Math.round(goalOffsetX);
         goalSprite.y = Math.round(goalOffsetY);
-        app.stage.addChild(goalSprite);
-        
-        
-
+        app.stage.addChild(goalSprite);  
     })
-    
-    
 }
 )
 function handleCustomMess(CustomMess){
