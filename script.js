@@ -26,7 +26,7 @@ document.getElementById("pixi-container").appendChild(app.view);
 
 const texturePromise = PIXI.Assets.load('imgs/imgGalaxy.png');
 const tankPromise = PIXI.Assets.load('imgs/imgTanks.png');
-const goalPromise = PIXI.Assets.load('imgs/imgTanks.png');
+const goalPromise = PIXI.Assets.load('imgs/imgTieFigther.png');
 
 texturePromise.then((texturePromiseReceive) => {
     document.addEventListener('keydown', onKeyDown);
@@ -54,10 +54,12 @@ texturePromise.then((texturePromiseReceive) => {
     )
     goalPromise.then((goalPromiseReceive) =>{
         var goalTexture = new PIXI.Texture(
-            PIXI.utils.TextureCache['imgs/imgTanks.png'],
-            new PIXI.Rectangle(0 * 48,46*48, 48, 48)
+            PIXI.utils.TextureCache['imgs/imgTieFigther.png'],
+            new PIXI.Rectangle(0 ,0, 2048, 2048)
         );
         goalSprite = new PIXI.Sprite(goalTexture);
+        goalSprite.width=75;
+        goalSprite.height=75;
         goalSprite.x = Math.round(goalOffsetX);
         goalSprite.y = Math.round(goalOffsetY);
         app.stage.addChild(goalSprite);  
