@@ -67,6 +67,7 @@ texturePromise.then((texturePromiseReceive) => {
         goalSprite.x = Math.round(goalOffsetX);
         goalSprite.y = Math.round(goalOffsetY);
         app.stage.addChild(goalSprite);  
+        text();
     })
     explodePromise.then((explodePromiseReceive) =>{
         var explodeTexture = new PIXI.Texture(
@@ -80,12 +81,16 @@ texturePromise.then((texturePromiseReceive) => {
         explodeSprite.y = Math.round(explodeOffsetY);
         app.stage.addChild(explodeSprite);  
     })
-
-
 }
 
 )
+function text(){
+    document.getElementById("score").innerHTML = "Score = " +score;
+    document.getElementById("enemie").innerHTML = "Tie Fighter Position X = "+goalSprite.x + "Y = "+goalSprite.y;
+    document.getElementById("player").innerHTML = "Player Position X = "+ playerTankSprite.x + "Y = "+ playerTankSprite.y;
+}
 function handleCustomMess(CustomMess){
+    collide();
     if(CustomMess.data.for && !CustomMess.data.bac){
         if (playerTankSprite.position.y != 0) {
             // Don't move up if the player is at the top of the stage
@@ -119,8 +124,6 @@ function explode(){
 
 
 function collide(){
-    console.log(playerTankSprite.x + " " + playerTankSprite.y);
-    console.log(goalSprite.x + " " + goalSprite.y);
     let newXValue = (Math.random() * 600);
     let newYValue = (Math.random() * 600);
 
@@ -142,13 +145,13 @@ function collide(){
         goalSprite.x = Math.round(goalSprite.x);
         goalSprite.y = Math.round(goalSprite.y);
     }
+    text();
 }
 
 
 function onKeyDown(key) {
+    
     collide();
-
-
     // W Key is 87
     // Up arrow is 87
     if (key.keyCode === 87 || key.keyCode === 38) {
@@ -190,9 +193,6 @@ function onKeyDown(key) {
     }
     playerTankSprite.position.x = Math.round(playerTankSprite.position.x);
     playerTankSprite.position.y = Math.round(playerTankSprite.position.y);
-    document.getElementById("status").innerHTML = "Version 1.2 "+" Position X: "+ playerTankSprite.x + " Position Y: " + playerTankSprite.y;
-    document.getElementById("score").innerHTML = "Score = " +score;
-    console.log(playerTankSprite.x + " " + playerTankSprite.y);
 }
 const options = new cast.framework.CastReceiverOptions(); 
 context.addCustomMessageListener(NAMESPACE, handleCustomMess);
