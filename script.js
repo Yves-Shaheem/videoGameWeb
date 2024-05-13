@@ -126,7 +126,7 @@ function collide(){
 
     let positionX = false;
     let positionY = false; 
-    for (let i = 0; i < 20; i++) {
+    for (let i = 0; i < 80; i++) {
         if(playerTankSprite.x == goalSprite.x + i){
             console.log("Position X collide");
             positionX = true};

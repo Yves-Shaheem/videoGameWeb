@@ -1,0 +1,24 @@
+.box{
+    display: flex;
+    flex-wrap: wrap;
+    background-color: rgba(0, 0, 0, 0.877);
+    
+}
+.game{
+    justify-items: center;
+    align-items: center;
+    padding: 30px;
+}
+.title{
+    color: Red;
+    letter-spacing: 3px;
+    text-align: center;
+
+}
+.text{
+    padding: 30px;
+    color: whitesmoke;
+    text-align: center;
+    justify-self: center;
+    align-items: center;
+}
