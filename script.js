@@ -13,6 +13,9 @@ var playerOffsetX = (resolutionX / 2 - 24);
 var playerOffsetY = (resolutionY / 2 - 24);
 var goalOffsetX = (resolutionX / 2 - (Math.random() * 200) + 0);
 var goalOffsetY = (resolutionY / 2 - (Math.random() * 200) + 0);
+
+var explodeOffsetX = (resolutionX / 2 - (Math.random() * 200) + 0);
+var explodeOffsetY = (resolutionY / 2 - (Math.random() * 200) + 0);
 var score = 0;
 console.log(goalOffsetX + " Goal Off Set " + goalOffsetY);
 
@@ -27,6 +30,7 @@ document.getElementById("pixi-container").appendChild(app.view);
 const texturePromise = PIXI.Assets.load('imgs/imgGalaxy.png');
 const tankPromise = PIXI.Assets.load('imgs/imgTanks.png');
 const goalPromise = PIXI.Assets.load('imgs/imgTieFigther.png');
+const explodePromise=PIXI.Assets.load('imgs/imgExplodeAsteroid.png');
 
 texturePromise.then((texturePromiseReceive) => {
     document.addEventListener('keydown', onKeyDown);
@@ -64,7 +68,22 @@ texturePromise.then((texturePromiseReceive) => {
         goalSprite.y = Math.round(goalOffsetY);
         app.stage.addChild(goalSprite);  
     })
+    explodePromise.then((explodePromiseReceive) =>{
+        var explodeTexture = new PIXI.Texture(
+            PIXI.utils.TextureCache['imgs/imgExplodeAsteroid.png'],
+            new PIXI.Rectangle(0 ,0, 2048, 2048)
+        );
+        explodeSprite = new PIXI.Sprite(explodeTexture);
+        explodeSprite.width=75;
+        explodeSprite.height=75;
+        explodeSprite.x = Math.round(explodeOffsetX);
+        explodeSprite.y = Math.round(explodeOffsetY);
+        app.stage.addChild(explodeSprite);  
+    })
+
+
 }
+
 )
 function handleCustomMess(CustomMess){
     if(CustomMess.data.for && !CustomMess.data.bac){
@@ -91,6 +110,10 @@ function handleCustomMess(CustomMess){
             playerTankSprite.position.x += boxWidth;
         }
     }
+
+}
+
+function explode(){
 
 }
 
@@ -124,6 +147,8 @@ function collide(){
 
 function onKeyDown(key) {
     collide();
+
+
     // W Key is 87
     // Up arrow is 87
     if (key.keyCode === 87 || key.keyCode === 38) {
