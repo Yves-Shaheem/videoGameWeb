@@ -6,9 +6,11 @@ const resolutionY = 800;
 var tileSizeX = 128;
 var tileSizeY = 128;
 
+
 var groundTiles;
 var playerTankSprite;
 var goalSprite;
+var explodeSprite;
 var playerOffsetX = (resolutionX / 2 - 24);
 var playerOffsetY = (resolutionY / 2 - 24);
 var goalOffsetX = (resolutionX / 2 - (Math.random() * 200) + 0);
@@ -17,6 +19,11 @@ var goalOffsetY = (resolutionY / 2 - (Math.random() * 200) + 0);
 var explodeOffsetX = (resolutionX / 2 - (Math.random() * 200) + 0);
 var explodeOffsetY = (resolutionY / 2 - (Math.random() * 200) + 0);
 var score = 0;
+
+
+var remainingTime;
+
+
 console.log(goalOffsetX + " Goal Off Set " + goalOffsetY);
 
 const app = new PIXI.Application({ width: resolutionX, height: resolutionY, backgroundColor: 0x1099bb });
@@ -24,7 +31,17 @@ const app = new PIXI.Application({ width: resolutionX, height: resolutionY, back
 var boxWidth = resolutionX/ 40;
 var boxHeight = resolutionY / 40;
 console.log(boxWidth);
+/*
+const audio= new Audio('musics/song1.mp3');
+audio.volume=0.5;
+//audio.loop=true;
 
+function playMusic() {
+    audio.play()
+}
+
+playMusic();
+*/
 document.getElementById("pixi-container").appendChild(app.view);
 
 const texturePromise = PIXI.Assets.load('imgs/imgGalaxy.png');
@@ -88,7 +105,11 @@ function text(){
     document.getElementById("score").innerHTML = "Score = " +score;
     document.getElementById("enemie").innerHTML = "Tie Fighter Position X = "+goalSprite.x + "Y = "+goalSprite.y;
     document.getElementById("player").innerHTML = "Player Position X = "+ playerTankSprite.x + "Y = "+ playerTankSprite.y;
+    document.getElementById("explosion").innerHTML="Asteroid Position X = "+explodeSprite.x+ " Y = "+explodeSprite.y;
+    document.getElementById("explosionTime").innerHTML="Time before explosion="+remainingTime+"s";
+
 }
+
 function handleCustomMess(CustomMess){
     collide();
     if(CustomMess.data.for && !CustomMess.data.bac){
@@ -119,7 +140,50 @@ function handleCustomMess(CustomMess){
 }
 
 function explode(){
+    var explosionRadius=100;
+    let explosionPending=false;
 
+    let positionX = false;
+    let positionY = false;
+
+    if(playerTankSprite.x >=explodeSprite.x-explosionRadius && playerTankSprite.x<= explodeSprite.x+explosionRadius){
+        positionX=true;
+    }
+    if(playerTankSprite.y >=explodeSprite.y-explosionRadius && playerTankSprite.y<= explodeSprite.y+explosionRadius){
+        positionY=true;
+    }
+
+    console.log("asteroid x position :"+explodeSprite.x);
+    console.log("asteroid y position :"+explodeSprite.y);
+
+    if(positionX && positionY &&!explosionPending){
+        explosionPending=true;
+        setTimeout(()=>{
+            playerTankSprite.x=playerOffsetX;
+            playerTankSprite.y=playerOffsetY;
+            score=0;
+            explosionPending=false;
+
+        },10000);
+
+        countTime();
+    }
+
+}
+
+function countTime(){
+    document.getElementById("explosionTime").innerHTML="Time before explosion= 10s"
+    remainingTime=9;
+    const timeNum=setInterval(()=>{
+        if(remainingTime>=0){
+            document.getElementById("explosionTime").innerHTML="Time before explosion="+remainingTime+"s";
+            remainingTime--;
+        }else{
+            clearInterval(timeNum);
+            document.getElementById("explosionTime").innerHTML="explosion iminent";
+
+        }
+    },1000)
 }
 
 
@@ -145,6 +209,8 @@ function collide(){
         goalSprite.x = Math.round(goalSprite.x);
         goalSprite.y = Math.round(goalSprite.y);
     }
+
+    
     text();
 }
 
@@ -152,6 +218,7 @@ function collide(){
 function onKeyDown(key) {
     
     collide();
+  
     // W Key is 87
     // Up arrow is 87
     if (key.keyCode === 87 || key.keyCode === 38) {
@@ -192,9 +259,12 @@ function onKeyDown(key) {
             playerTankSprite.position.x += boxWidth;
         }
     }
+
     playerTankSprite.position.x = Math.round(playerTankSprite.position.x);
     playerTankSprite.position.y = Math.round(playerTankSprite.position.y);
+    explode();
 }
+
 const options = new cast.framework.CastReceiverOptions(); 
 context.addCustomMessageListener(NAMESPACE, handleCustomMess);
 context.start(options);
