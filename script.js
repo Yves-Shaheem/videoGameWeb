@@ -11,6 +11,7 @@ var groundTiles;
 var playerTankSprite;
 var goalSprite;
 var explodeSprite;
+var deathStarSprite;
 var playerOffsetX = (resolutionX / 2 - 24);
 var playerOffsetY = (resolutionY / 2 - 24);
 var goalOffsetX = (resolutionX / 2 - (Math.random() * 200) + 0);
@@ -18,6 +19,8 @@ var goalOffsetY = (resolutionY / 2 - (Math.random() * 200) + 0);
 
 var explodeOffsetX = (resolutionX / 2 - (Math.random() * 200) + 0);
 var explodeOffsetY = (resolutionY / 2 - (Math.random() * 200) + 0);
+var deathStarOffsetX= (resolutionX / 2 - (Math.random() * 200) + 0);
+var deathStarOffsetY=(resolutionY / 2 - (Math.random() * 200) + 0);
 var score = 0;
 
 
@@ -48,6 +51,7 @@ const texturePromise = PIXI.Assets.load('imgs/imgGalaxy.png');
 const tankPromise = PIXI.Assets.load('imgs/imgTanks.png');
 const goalPromise = PIXI.Assets.load('imgs/imgTieFigther.png');
 const explodePromise=PIXI.Assets.load('imgs/imgExplodeAsteroid.png');
+const deathStarPromise=PIXI.Assets.load('imgs/imgDeathStar.png');
 
 texturePromise.then((texturePromiseReceive) => {
     document.addEventListener('keydown', onKeyDown);
@@ -98,6 +102,19 @@ texturePromise.then((texturePromiseReceive) => {
         explodeSprite.y = Math.round(explodeOffsetY);
         app.stage.addChild(explodeSprite);  
     })
+    deathStarPromise.then((deathStarReceive)=>{
+        var deathStarTexture=new PIXI.Texture(
+            PIXI.utils.TextureCache['imgs/imgDeathStar.png'],
+            new PIXI.Rectangle(0 ,0, 2048, 2048)
+        );
+        deathStarSprite=new PIXI.Sprite(deathStarTexture);
+        deathStarSprite.width=150;
+        deathStarSprite.height=150;
+        deathStarSprite.x=Math.round(deathStarOffsetX);
+        deathStarSprite.y=Math.round(deathStarOffsetY);
+        app.stage.addChild(deathStarSprite);
+    })
+    
 }
 
 )
@@ -140,11 +157,14 @@ function handleCustomMess(CustomMess){
 }
 
 function explode(){
-    var explosionRadius=100;
-    let explosionPending=false;
+    var explosionRadius=50;
+    
 
     let positionX = false;
     let positionY = false;
+
+    let newXValue = (Math.random() * 600);
+    let newYValue = (Math.random() * 600);
 
     if(playerTankSprite.x >=explodeSprite.x-explosionRadius && playerTankSprite.x<= explodeSprite.x+explosionRadius){
         positionX=true;
@@ -156,35 +176,39 @@ function explode(){
     console.log("asteroid x position :"+explodeSprite.x);
     console.log("asteroid y position :"+explodeSprite.y);
 
-    if(positionX && positionY &&!explosionPending){
-        explosionPending=true;
-        setTimeout(()=>{
+    
+        remainingTime=3;
+        const timeNum=setInterval(()=>{
+            if(remainingTime>0){
+                document.getElementById("explosionTime").innerHTML="Time before explosion="+remainingTime+"s";
+                remainingTime--;
+               
+            }else{
+                clearInterval(timeNum);
+                document.getElementById("explosionTime").innerHTML="explosion iminent";
+                
+
+                if(positionX && positionY ){
+                    
             playerTankSprite.x=playerOffsetX;
             playerTankSprite.y=playerOffsetY;
             score=0;
-            explosionPending=false;
+            
+                }
+                
+                explodeSprite.position.y = newYValue;
+                explodeSprite.position.x = newXValue;
+                explodeSprite.x = Math.round(explodeSprite.x);
+                explodeSprite.y = Math.round(explodeSprite.y);
+              
+            }
 
-        },10000);
+        },1000);
 
-        countTime();
+        text();
     }
 
-}
 
-function countTime(){
-    document.getElementById("explosionTime").innerHTML="Time before explosion= 10s"
-    remainingTime=9;
-    const timeNum=setInterval(()=>{
-        if(remainingTime>=0){
-            document.getElementById("explosionTime").innerHTML="Time before explosion="+remainingTime+"s";
-            remainingTime--;
-        }else{
-            clearInterval(timeNum);
-            document.getElementById("explosionTime").innerHTML="explosion iminent";
-
-        }
-    },1000)
-}
 
 
 function collide(){
@@ -218,6 +242,7 @@ function collide(){
 function onKeyDown(key) {
     
     collide();
+  
   
     // W Key is 87
     // Up arrow is 87
