@@ -34,17 +34,17 @@ const app = new PIXI.Application({ width: resolutionX, height: resolutionY, back
 var boxWidth = resolutionX/ 40;
 var boxHeight = resolutionY / 40;
 console.log(boxWidth);
-/*
+
 const audio= new Audio('musics/song1.mp3');
 audio.volume=0.5;
-//audio.loop=true;
+audio.loop=true;
 
 function playMusic() {
     audio.play()
 }
 
 playMusic();
-*/
+
 document.getElementById("pixi-container").appendChild(app.view);
 
 const texturePromise = PIXI.Assets.load('imgs/imgGalaxy.png');
@@ -108,11 +108,7 @@ texturePromise.then((texturePromiseReceive) => {
             new PIXI.Rectangle(0 ,0, 2048, 2048)
         );
         deathStarSprite=new PIXI.Sprite(deathStarTexture);
-        deathStarSprite.width=150;
-        deathStarSprite.height=150;
-        deathStarSprite.x=Math.round(deathStarOffsetX);
-        deathStarSprite.y=Math.round(deathStarOffsetY);
-        app.stage.addChild(deathStarSprite);
+       
     })
     
 }
@@ -129,6 +125,8 @@ function text(){
 
 function handleCustomMess(CustomMess){
     collide();
+    collideDeathStar();
+    explode();
     if(CustomMess.data.for && !CustomMess.data.bac){
         if (playerTankSprite.position.y != 0) {
             // Don't move up if the player is at the top of the stage
@@ -203,7 +201,7 @@ function explode(){
               
             }
 
-        },1000);
+        },3000);
 
         text();
     }
@@ -232,17 +230,50 @@ function collide(){
         goalSprite.position.x = newXValue;
         goalSprite.x = Math.round(goalSprite.x);
         goalSprite.y = Math.round(goalSprite.y);
+
+        if(Math.random() <0.1){
+        deathStarSprite.width=150;
+        deathStarSprite.height=150;
+        deathStarSprite.x=Math.round(deathStarOffsetX);
+        deathStarSprite.y=Math.round(deathStarOffsetY);
+        app.stage.addChild(deathStarSprite);
+        }
     }
+
 
     
     text();
 }
 
+function collideDeathStar(){
+    let newXValue = (Math.random() * 600);
+    let newYValue = (Math.random() * 600);
+
+    let positionX = false;
+    let positionY = false; 
+    for (let i = 0; i < 50; i++) {
+        if(playerTankSprite.x == deathStarSprite.x + i){
+            console.log("Position X collide");
+            positionX = true};
+        if(playerTankSprite.y == deathStarSprite.y+ i){
+            console.log("Position Y collide");
+            positionY = true};
+    }
+    if(positionX && positionY){
+        console.log("Both position collide");
+        score +=1000;
+        app.stage.removeChild(deathStarSprite);
+        deathStarSprite.position.y = newYValue;
+        deathStarSprite.position.x = newXValue;
+        deathStarSprite.x = Math.round(deathStarSprite.x);
+        deathStarSprite.y = Math.round(deathStarSprite.y);
+}
+}
 
 function onKeyDown(key) {
     
     collide();
-  
+    collideDeathStar();
   
     // W Key is 87
     // Up arrow is 87
